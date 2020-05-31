@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Grid, Typography, Button } from '@material-ui/core';
-
+import { Grid, Typography, Button, Fab } from '@material-ui/core';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 
 function Cell(props) {
@@ -41,10 +41,23 @@ class App extends React.Component {
     return board[index];
   }
 
+  reset() {
+    this.setState({
+      board: ['', '', '', '', '', '', '', '', ''],
+      xIsNext: true,
+      winner: false
+    });
+  }
+
   render() {
     return (
       <Grid container alignItems="center" justify="center" direction="column" style={{ minHeight: "100vh" }}>
-
+        <Fab onClick={() => { this.reset(); }} color="primary" aria-label="add" style={{ position: "absolute", bottom: '15px', left: '15px' }}>
+          <RefreshIcon />
+        </Fab>
+        <Typography variant="h6" component="h6">
+          {this.state.winner ? `${this.state.winner} won the game` : this.state.xIsNext ? "O turn :" : "X turn :"}
+        </Typography>
         <div style={{ width: '220px' }}>
           <Cell i={0} b={this.state.board} click={() => this.handle(0)} />
           <Cell i={1} b={this.state.board} click={() => this.handle(1)} />
@@ -56,11 +69,6 @@ class App extends React.Component {
           <Cell i={7} b={this.state.board} click={() => this.handle(7)} />
           <Cell i={8} b={this.state.board} click={() => this.handle(8)} />
         </div>
-
-        <Typography variant="h4" component="h4">
-          {this.state.winner ? `${this.state.winner} won the game` : 'Tik Tak Teo'}
-        </Typography>
-
       </Grid>
     );
   }
